@@ -43,11 +43,11 @@ public class GCSInterface extends JFrame {
 	private ResultSetMetaData md;
 
 	private int second = 60, phasecount, logcount;
-	private File background1 = new File("C:/Users/Admin/Javaworkspace/Mars Lander Project/src/image/background.jpg");
-	private File image = new File("C:/Users/Admin/Javaworkspace/Mars Lander Project/src/image/marslander.png");
+	private File background1 = new File("./src/image/background.jpg");
+	private File image = new File("./src/image/marslander.png");
 
-	private File touchdown1 = new File("C:/Users/Admin/Javaworkspace/Mars Lander Project/src/image/touchdown.png");
-	private File marslandercutoff1 = new File("C:/Users/Admin/Javaworkspace/Mars Lander Project/src/image/marslandercutoff.png");
+	private File touchdown1 = new File("./src/image/touchdown.png");
+	private File marslandercutoff1 = new File("./src/image/marslandercutoff.png");
 	private BufferedImage lcurve = new BufferedImage(1000, 600,
 			BufferedImage.TYPE_INT_ARGB);
 
@@ -230,7 +230,7 @@ public class GCSInterface extends JFrame {
 					liveSimulation.setEnabled(false);
 
 					File phase1open = new File(
-							"C:/Users/Admin/Javaworkspace/Mars Lander Project/src/image/marslanderphase1.png");
+							"./src/image/marslanderphase1.png");
 
 					BufferedImage marslanderphase1 = new BufferedImage(10, 15,
 							BufferedImage.TYPE_INT_ARGB);
@@ -275,7 +275,7 @@ public class GCSInterface extends JFrame {
 				if (e.getSource() == phase2) {
 
 					File parachute1 = new File(
-							"C:/Users/Admin/Javaworkspace/Mars Lander Project/src/image/parachuteReleased.png");
+							"./src/image/parachuteReleased.png");
 
 					BufferedImage parachute = new BufferedImage(10, 15,
 							BufferedImage.TYPE_INT_ARGB);
@@ -306,7 +306,7 @@ public class GCSInterface extends JFrame {
 				if (e.getSource() == phase3 && parachuteIndicator(95)) {
 
 					File image = new File(
-							"C:/Users/Admin/Javaworkspace/Mars Lander Project/src/image/marslander.png");
+							"./src/image/marslander.png");
 
 					BufferedImage marslander = new BufferedImage(10, 15,
 							BufferedImage.TYPE_INT_ARGB);
@@ -335,10 +335,10 @@ public class GCSInterface extends JFrame {
 		});
 		phase4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == phase4 && parachuteIndicator(95)) {
+				if (e.getSource() == phase4 && parachuteIndicator(50)) {
 
 					File marslandercutoff1 = new File(
-							"C:/Users/Admin/Javaworkspace/Mars Lander Project/src/image/marslandercutoff.png");
+							"./src/image/marslandercutoff.png");
 
 					BufferedImage marslandercutoff = new BufferedImage(10, 15,
 							BufferedImage.TYPE_INT_ARGB);
@@ -359,13 +359,13 @@ public class GCSInterface extends JFrame {
 					phase5.setEnabled(true);
 					phase4.setBackground(Color.RED);
 
-				} else if (parachuteIndicator(5)) {
+				} else if (parachuteIndicator(50)) {
 					phase4.setEnabled(false);
 					phase5.setEnabled(false);
 					phase4.setBackground(Color.RED);
 					phase5.setBackground(Color.RED);
 					File boom1 = new File(
-							"C:/Users/Admin/Javaworkspace/Mars Lander Project/src/image/Eplosion.png");
+							"./src/image/Eplosion.png");
 
 					BufferedImage boom = new BufferedImage(10, 15,
 							BufferedImage.TYPE_INT_ARGB);
@@ -400,10 +400,10 @@ public class GCSInterface extends JFrame {
 
 		phase5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == phase5 && parachuteIndicator(95)) {
+				if (e.getSource() == phase5 && parachuteIndicator(50)) {
 
 					File touchdown1 = new File(
-							"C:/Users/Admin/Javaworkspace/Mars Lander Project/src/image/touchdown.png");
+							"./src/image/touchdown.png");
 
 					BufferedImage touchdown = new BufferedImage(10, 15,
 							BufferedImage.TYPE_INT_ARGB);
@@ -435,11 +435,11 @@ public class GCSInterface extends JFrame {
 					landed.setForeground(Color.RED);
 					landed.setBackground(Color.BLACK);
 
-				} else if (parachuteIndicator(5)) {
+				} else if (parachuteIndicator(50)) {
 					phase5.setEnabled(false);
 					phase5.setBackground(Color.RED);
 					File boom1 = new File(
-							"C:/Users/Admin/Javaworkspace/Mars Lander Project/src/image/Eplosion.png");
+							"./src/image/Eplosion.png");
 
 					BufferedImage boom = new BufferedImage(10, 15,
 							BufferedImage.TYPE_INT_ARGB);
@@ -491,7 +491,7 @@ public class GCSInterface extends JFrame {
 						liveSimulation.setBackground(Color.RED);
 
 						File phase1open = new File(
-								"C:/Users/Admin/Javaworkspace/Mars Lander Project/src/image/marslanderphase1.png");
+								"./src/image/marslanderphase1.png");
 
 						BufferedImage marslanderphase1 = new BufferedImage(10,
 								15, BufferedImage.TYPE_INT_ARGB);
@@ -511,7 +511,7 @@ public class GCSInterface extends JFrame {
 					try {
 						sysSleep();
 						File parachute1 = new File(
-								"C:/Users/Admin/Javaworkspace/Mars Lander Project/src/image/parachuteReleased.png");
+								"./src/image/parachuteReleased.png");
 
 						BufferedImage parachute = new BufferedImage(10, 15,
 								BufferedImage.TYPE_INT_ARGB);
@@ -529,7 +529,7 @@ public class GCSInterface extends JFrame {
 					try {
 						sysSleep();
 						File img2 = new File(
-								"C:/Users/Admin/Javaworkspace/Mars Lander Project/src/image/marslander.png");
+								"./src/image/marslander.png");
 
 						BufferedImage marslander = new BufferedImage(10, 15,
 								BufferedImage.TYPE_INT_ARGB);
@@ -547,7 +547,7 @@ public class GCSInterface extends JFrame {
 					try {
 						sysSleep();
 						File marslandercutoff1 = new File(
-								"C:/Users/Admin/Javaworkspace/Mars Lander Project/src/image/marslandercutoff.png");
+								"./src/image/marslandercutoff.png");
 
 						BufferedImage marslandercutoff = new BufferedImage(10,
 								15, BufferedImage.TYPE_INT_ARGB);
@@ -565,7 +565,7 @@ public class GCSInterface extends JFrame {
 					try {
 						sysSleep();
 						File touchdown1 = new File(
-								"C:/Users/Admin/Javaworkspace/Mars Lander Project/src/image/touchdown.png");
+								"./src/image/touchdown.png");
 
 						BufferedImage touchdown = new BufferedImage(10, 15,
 								BufferedImage.TYPE_INT_ARGB);
@@ -592,7 +592,7 @@ public class GCSInterface extends JFrame {
 					try {
 						sysSleep();
 						File boom1 = new File(
-								"C:/Users/Admin/Javaworkspace/Mars Lander Project/src/image/Eplosion.png");
+								"./src/image/Eplosion.png");
 
 						BufferedImage boom = new BufferedImage(10, 15,
 								BufferedImage.TYPE_INT_ARGB);
@@ -1313,7 +1313,7 @@ public class GCSInterface extends JFrame {
 		PrintWriter out;
 		try {
 			out = new PrintWriter(
-					"C:/Users/Admin/Javaworkspace/Mars Lander Project/src/GCSlog"
+					"./src/GCSlog"
 							+ logcount + ".txt");
 			out.println("Phase "
 					+ phasecount
@@ -1413,7 +1413,7 @@ public class GCSInterface extends JFrame {
 
 				try {
 					out = new PrintWriter(
-							"C:/Users/Admin/Javaworkspace/Mars Lander Project/src/GCSlog"
+							"./src/GCSlog"
 									+ logcount + ".txt");
 					out.println("Phase "
 							+ phasecount
@@ -1505,7 +1505,7 @@ public class GCSInterface extends JFrame {
 
 		try {
 			out = new PrintWriter(
-					"C:/Users/Admin/Javaworkspace/Mars Lander Project/src/GCSlog"
+					"./src/GCSlog"
 							+ logcount + ".txt");
 			out.println("Phase "
 					+ phasecount
@@ -1632,7 +1632,7 @@ public class GCSInterface extends JFrame {
 
 			try {
 				out = new PrintWriter(
-						"C:/Users/Admin/Javaworkspace/Mars Lander Project/src/GCSlog"
+						"./src/GCSlog"
 								+ logcount + ".txt");
 				out.println("Phase "
 						+ phasecount
@@ -1715,7 +1715,7 @@ public class GCSInterface extends JFrame {
 
 		try {
 			out = new PrintWriter(
-					"C:/Users/Admin/Javaworkspace/Mars Lander Project/src/GCSlog"
+					"./src/GCSlog"
 							+ logcount + ".txt");
 			out.println("Phase "
 					+ phasecount
@@ -1783,7 +1783,7 @@ public class GCSInterface extends JFrame {
 
 				try {
 					out = new PrintWriter(
-							"C:/Users/Admin/Javaworkspace/Mars Lander Project/src/GCSlog"
+							"./src/GCSlog"
 									+ logcount + ".txt");
 					out.println("Phase "
 							+ phasecount
@@ -1822,7 +1822,7 @@ public class GCSInterface extends JFrame {
 							+ (fRollEng2.getText())
 							+ "  Roll Engine 1 Status: "
 							+ (fRollEng3.getText()));
-					out.close();
+				
 					out.close();
 				} catch (FileNotFoundException ey) {
 					System.out.println(ey);
