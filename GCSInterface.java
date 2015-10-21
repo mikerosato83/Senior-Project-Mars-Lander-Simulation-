@@ -1,39 +1,49 @@
 import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.Shape;
-import java.awt.geom.QuadCurve2D;
-import java.awt.image.BufferedImage;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.QuadCurve2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.Random;
+import java.util.Scanner;
 
-import javax.swing.*;
-import javax.swing.table.TableColumn;
+import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class GCSInterface extends JFrame {
 
 	/**
-	 * 
-	 */
+         *
+        * 
+         */
 	private static final long serialVersionUID = 1L;
 
 	// Database Connection
@@ -44,10 +54,12 @@ public class GCSInterface extends JFrame {
 
 	private int second = 60, phasecount, logcount;
 	private File background1 = new File("./src/image/background.jpg");
+
 	private File image = new File("./src/image/marslander.png");
 
 	private File touchdown1 = new File("./src/image/touchdown.png");
-	private File marslandercutoff1 = new File("./src/image/marslandercutoff.png");
+	private File marslandercutoff1 = new File(
+			"./src/image/marslandercutoff.png");
 	private BufferedImage lcurve = new BufferedImage(1000, 600,
 			BufferedImage.TYPE_INT_ARGB);
 
@@ -62,7 +74,7 @@ public class GCSInterface extends JFrame {
 	private JTextArea fSqlQuery;
 	private JButton submit, phase1, phase2, phase3, phase4, phase5, graphView,
 			newSimulation, liveSimulation;
-	
+
 	private JFormattedTextField fAltitude, fEng1, fThrust, fEng2, fEng3,
 			fAccel1, fAccel2, fAccel3, fTime, fAngle, fVar1, fTempSensor,
 			fDropHeight, fVertical, fHorizontal, fParachuteIndicator,
@@ -76,7 +88,8 @@ public class GCSInterface extends JFrame {
 	private int engineTemp, engineDesiredTemp, tempDegree;
 
 	private double eng1, eng2, eng3, accel1, accel2, accel3, dropHeight = 500,
-			airspeed, elevation, distance, angle, time, var1, thrust, altitude = 25960;
+			airspeed, elevation, distance, angle, time, var1, thrust,
+			altitude = 25960;
 
 	private boolean parachuteIndicator;
 
@@ -107,8 +120,6 @@ public class GCSInterface extends JFrame {
 		engineDesiredTemp = 300; // temp a little higher than the average car
 		tempDegree = 10; // degree increment rate
 
-	
-
 		// Create TabbedPanes
 		tabbedPane = new JTabbedPane();
 		tabbedPane.addTab("Tregectory Data", panel1);
@@ -119,7 +130,7 @@ public class GCSInterface extends JFrame {
 		tabbedPane.setSelectedIndex(0);
 		tabbedPane.setBackground(Color.BLACK);
 		tabbedPane.setForeground(Color.WHITE);
-		
+
 		// Add MenuBar and all MenuItems
 		menuBar = new JMenuBar();
 		menu = new JMenu("File");
@@ -156,7 +167,7 @@ public class GCSInterface extends JFrame {
 		edit.add(tdEdit);
 		tdEdit.setBackground(Color.BLACK);
 		tdEdit.setForeground(Color.WHITE);
-		mainFrame.add(menuBar, BorderLayout.PAGE_START);
+		mainFrame.add(menuBar, BorderLayout.NORTH);
 
 		topPanel.setBackground(Color.BLACK);
 		topPanel.setForeground(Color.BLACK);
@@ -303,10 +314,9 @@ public class GCSInterface extends JFrame {
 		});
 		phase3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == phase3 && parachuteIndicator(95)) {
+				if (e.getSource() == phase3) {
 
-					File image = new File(
-							"./src/image/marslander.png");
+					File image = new File("./src/image/marslander.png");
 
 					BufferedImage marslander = new BufferedImage(10, 15,
 							BufferedImage.TYPE_INT_ARGB);
@@ -335,7 +345,7 @@ public class GCSInterface extends JFrame {
 		});
 		phase4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == phase4 && parachuteIndicator(50)) {
+				if (e.getSource() == phase4 && parachuteIndicator(95)) {
 
 					File marslandercutoff1 = new File(
 							"./src/image/marslandercutoff.png");
@@ -359,13 +369,12 @@ public class GCSInterface extends JFrame {
 					phase5.setEnabled(true);
 					phase4.setBackground(Color.RED);
 
-				} else if (parachuteIndicator(50)) {
+				} else if (parachuteIndicator(5)) {
 					phase4.setEnabled(false);
 					phase5.setEnabled(false);
 					phase4.setBackground(Color.RED);
 					phase5.setBackground(Color.RED);
-					File boom1 = new File(
-							"./src/image/Eplosion.png");
+					File boom1 = new File("./src/image/Eplosion.png");
 
 					BufferedImage boom = new BufferedImage(10, 15,
 							BufferedImage.TYPE_INT_ARGB);
@@ -400,10 +409,9 @@ public class GCSInterface extends JFrame {
 
 		phase5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == phase5 && parachuteIndicator(50)) {
+				if (e.getSource() == phase5 && parachuteIndicator(95)) {
 
-					File touchdown1 = new File(
-							"./src/image/touchdown.png");
+					File touchdown1 = new File("./src/image/touchdown.png");
 
 					BufferedImage touchdown = new BufferedImage(10, 15,
 							BufferedImage.TYPE_INT_ARGB);
@@ -435,11 +443,10 @@ public class GCSInterface extends JFrame {
 					landed.setForeground(Color.RED);
 					landed.setBackground(Color.BLACK);
 
-				} else if (parachuteIndicator(50)) {
+				} else if (parachuteIndicator(5)) {
 					phase5.setEnabled(false);
 					phase5.setBackground(Color.RED);
-					File boom1 = new File(
-							"./src/image/Eplosion.png");
+					File boom1 = new File("./src/image/Eplosion.png");
 
 					BufferedImage boom = new BufferedImage(10, 15,
 							BufferedImage.TYPE_INT_ARGB);
@@ -528,8 +535,7 @@ public class GCSInterface extends JFrame {
 
 					try {
 						sysSleep();
-						File img2 = new File(
-								"./src/image/marslander.png");
+						File img2 = new File("./src/image/marslander.png");
 
 						BufferedImage marslander = new BufferedImage(10, 15,
 								BufferedImage.TYPE_INT_ARGB);
@@ -564,8 +570,7 @@ public class GCSInterface extends JFrame {
 
 					try {
 						sysSleep();
-						File touchdown1 = new File(
-								"./src/image/touchdown.png");
+						File touchdown1 = new File("./src/image/touchdown.png");
 
 						BufferedImage touchdown = new BufferedImage(10, 15,
 								BufferedImage.TYPE_INT_ARGB);
@@ -591,8 +596,7 @@ public class GCSInterface extends JFrame {
 
 					try {
 						sysSleep();
-						File boom1 = new File(
-								"./src/image/Eplosion.png");
+						File boom1 = new File("./src/image/Eplosion.png");
 
 						BufferedImage boom = new BufferedImage(10, 15,
 								BufferedImage.TYPE_INT_ARGB);
@@ -626,8 +630,9 @@ public class GCSInterface extends JFrame {
 					try {
 						new GCSInterface();
 						newSimulation.setBackground(Color.RED);
+
 					} catch (Exception em) {
-						System.exit(ERROR);
+						System.exit(0);
 					}
 				}
 			}
@@ -700,7 +705,7 @@ public class GCSInterface extends JFrame {
 						fTime.setEditable(false);
 
 						done.setVisible(false);
-						cSimulation.setEnabled(true);
+						cSimulation.setEnabled(false);
 						done.setForeground(Color.RED);
 					}
 				});
@@ -876,195 +881,135 @@ public class GCSInterface extends JFrame {
 	// Create Page 2
 
 	public void createPage2() {
-		/*String sql = "SELECT * FROM MARSLANDER";
-		final Vector columnNames = new Vector();
-		final Vector data = new Vector();
-		panel2 = new JPanel();
-		panel2.setBackground(Color.BLACK);
-		JLabel lSqlQuery = new JLabel(
-				"Enter SQL Query = Select * From Mars Lander");
-		fSqlQuery = new JTextArea();
-
-		submit = new JButton(" Submit ");
-		panel2.add(lSqlQuery);
-		lSqlQuery.setForeground(Color.WHITE);
-		panel2.add(fSqlQuery);
-		panel2.add(submit);
-		submit.setBackground(Color.GREEN);
-
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			Connection con = DriverManager
-					.getConnection("jdbc:oracle:thin:@localhost:1521:teamb",
-							"SYSTEM", "admin");
-
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
-			ResultSetMetaData md = rs.getMetaData();
-			int columns = md.getColumnCount();
-			for (int i = 1; i <= columns; i++) {
-				columnNames.addElement(md.getColumnName(i));
-			}
-
-			while (rs.next()) {
-				Vector row = new Vector(columns);
-				for (int i = 1; i <= columns; i++) {
-					row.addElement(rs.getObject(i));
-				}
-				data.addElement(row);
-			}
-			rs.close();
-			stmt.close();
-
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-
-		JTable table = new JTable(data, columnNames);
-		TableColumn col;
-		for (int i = 0; i < table.getColumnCount(); i++) {
-			col = table.getColumnModel().getColumn(i);
-			col.setMaxWidth(250);
-		}
-		JScrollPane scrollPane = new JScrollPane(table);
-		panel2.add(scrollPane);
-
-		BoxLayout bLayout = new BoxLayout(panel2, 1);
-		panel2.setLayout(bLayout);
-		submit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == submit) {
-
-					try {
-						Class.forName("oracle.jdbc.driver.OracleDriver");
-						String url = "jdbc:oracle:thin:@localhost:1521:teamb";
-
-						String Username = "SYSTEM";
-
-						String Password = "admin";
-
-						/**
-						 * this part takes the String (which is a query) from a
-						 * TextField
-						 * 
-						 * and execute the query after the connection to mysql
-						 * database has been made
-						 
-
-						String query = fSqlQuery.getText();
-
-						conn = DriverManager.getConnection(url, Username,
-								Password);
-
-						System.out.print("connected");
-
-						stmt = conn.createStatement();
-
-						ResultSet result = stmt.executeQuery(query);
-
-						Vector columnNames = new Vector();
-						Vector data = new Vector();
-
-						int columns = md.getColumnCount();
-						for (int i = 1; i <= columns; i++) {
-							columnNames.addElement(md.getColumnName(i));
-						}
-
-						while (rs.next()) {
-							Vector row = new Vector(columns);
-							for (int i = 1; i <= columns; i++) {
-								row.addElement(rs.getString(query));
-							}
-							data.addElement(row);
-						}
-						rs.close();
-						stmt.close();
-
-					} catch (Exception em) {
-						System.out.println(em);
-					}
-
-					JTable table = new JTable(data, columnNames);
-					TableColumn col;
-					for (int i = 0; i < table.getColumnCount(); i++) {
-						col = table.getColumnModel().getColumn(i);
-						col.setMaxWidth(250);
-					}
-					JScrollPane scrollPane = new JScrollPane(table);
-					panel2.add(scrollPane);
-
-					BoxLayout bLayout = new BoxLayout(panel2, 1);
-					panel2.setLayout(bLayout);
-				}
-			}
-
-		});*/
+		/*
+		 * String sql = "SELECT * FROM MARSLANDER"; final Vector columnNames =
+		 * new Vector(); final Vector data = new Vector(); panel2 = new
+		 * JPanel(); panel2.setBackground(Color.BLACK); JLabel lSqlQuery = new
+		 * JLabel( "Enter SQL Query = Select * From Mars Lander"); fSqlQuery =
+		 * new JTextArea();
+		 * 
+		 * submit = new JButton(" Submit "); panel2.add(lSqlQuery);
+		 * lSqlQuery.setForeground(Color.WHITE); panel2.add(fSqlQuery);
+		 * panel2.add(submit); submit.setBackground(Color.GREEN);
+		 * 
+		 * try { Class.forName("oracle.jdbc.driver.OracleDriver"); Connection
+		 * con = DriverManager
+		 * .getConnection("jdbc:oracle:thin:@localhost:1521:teamb", "SYSTEM",
+		 * "e307016.ACCT04");
+		 * 
+		 * Statement stmt = con.createStatement(); ResultSet rs =
+		 * stmt.executeQuery(sql); ResultSetMetaData md = rs.getMetaData(); int
+		 * columns = md.getColumnCount(); for (int i = 1; i <= columns; i++) {
+		 * columnNames.addElement(md.getColumnName(i)); }
+		 * 
+		 * while (rs.next()) { Vector row = new Vector(columns); for (int i = 1;
+		 * i <= columns; i++) { row.addElement(rs.getObject(i)); }
+		 * data.addElement(row); } rs.close(); stmt.close();
+		 * 
+		 * } catch (Exception e) { System.out.println(e); }
+		 * 
+		 * JTable table = new JTable(data, columnNames); TableColumn col; for
+		 * (int i = 0; i < table.getColumnCount(); i++) { col =
+		 * table.getColumnModel().getColumn(i); col.setMaxWidth(250); }
+		 * JScrollPane scrollPane = new JScrollPane(table);
+		 * panel2.add(scrollPane);
+		 * 
+		 * BoxLayout bLayout = new BoxLayout(panel2, 1);
+		 * panel2.setLayout(bLayout); submit.addActionListener(new
+		 * ActionListener() { public void actionPerformed(ActionEvent e) { if
+		 * (e.getSource() == submit) {
+		 * 
+		 * try { Class.forName("oracle.jdbc.driver.OracleDriver"); String url =
+		 * "jdbc:oracle:thin:@localhost:1521:teamb";
+		 * 
+		 * String Username = "SYSTEM";
+		 * 
+		 * String Password = "e307016.ACCT04";
+		 * 
+		 * /** this part takes the String (which is a query) from a TextField
+		 * 
+		 * and execute the query after the connection to mysql database has been
+		 * made
+		 * 
+		 * 
+		 * String query = fSqlQuery.getText();
+		 * 
+		 * conn = DriverManager.getConnection(url, Username, Password);
+		 * 
+		 * System.out.print("connected");
+		 * 
+		 * stmt = conn.createStatement();
+		 * 
+		 * ResultSet result = stmt.executeQuery(query);
+		 * 
+		 * Vector columnNames = new Vector(); Vector data = new Vector();
+		 * 
+		 * int columns = md.getColumnCount(); for (int i = 1; i <= columns; i++)
+		 * { columnNames.addElement(md.getColumnName(i)); }
+		 * 
+		 * while (rs.next()) { Vector row = new Vector(columns); for (int i = 1;
+		 * i <= columns; i++) { row.addElement(rs.getString(query)); }
+		 * data.addElement(row); } rs.close(); stmt.close();
+		 * 
+		 * } catch (Exception em) { System.out.println(em); }
+		 * 
+		 * JTable table = new JTable(data, columnNames); TableColumn col; for
+		 * (int i = 0; i < table.getColumnCount(); i++) { col =
+		 * table.getColumnModel().getColumn(i); col.setMaxWidth(250); }
+		 * JScrollPane scrollPane = new JScrollPane(table);
+		 * panel2.add(scrollPane);
+		 * 
+		 * BoxLayout bLayout = new BoxLayout(panel2, 1);
+		 * panel2.setLayout(bLayout); } }
+		 * 
+		 * });
+		 */
 
 	}
 
 	// Create Page 3
 
 	public void createPage3() {
-		/*String sql = "SELECT * FROM PREDEFINED";
-		Vector columnNames = new Vector();
-		Vector data = new Vector();
-		panel3 = new JPanel();
-		JLabel lSqlQuery = new JLabel(
-				"Enter SQL Query = Select * From Mars Lander");
-		lSqlQuery.setBackground(Color.GREEN);
-		fSqlQuery = new JTextArea(null, sql, 2, 2);
-		submit = new JButton(" Submit ");
-		panel3.add(lSqlQuery);
-		panel3.add(fSqlQuery);
-		panel3.add(submit);
-		submit.setBackground(Color.GREEN);
-		lSqlQuery.setForeground(Color.WHITE);
-		panel3.setBackground(Color.BLACK);
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			Connection con = DriverManager
-					.getConnection("jdbc:oracle:thin:@localhost:1521:teamb",
-							"SYSTEM", "admin");
-
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(sql);
-			ResultSetMetaData md = rs.getMetaData();
-			int columns = md.getColumnCount();
-			for (int i = 1; i <= columns; i++) {
-				columnNames.addElement(md.getColumnName(i));
-			}
-
-			while (rs.next()) {
-				Vector row = new Vector(columns);
-				for (int i = 1; i <= columns; i++) {
-					row.addElement(rs.getObject(i));
-				}
-				data.addElement(row);
-			}
-			rs.close();
-			stmt.close();
-
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-
-		JTable table = new JTable(data, columnNames);
-		TableColumn col;
-		for (int i = 0; i < table.getColumnCount(); i++) {
-			col = table.getColumnModel().getColumn(i);
-			col.setMaxWidth(250);
-		}
-		JScrollPane scrollPane = new JScrollPane(table);
-		panel3.add(scrollPane);
-
-		BoxLayout bLayout = new BoxLayout(panel3, 1);
-		panel3.setLayout(bLayout);
-*/
+		/*
+		 * String sql = "SELECT * FROM PREDEFINED"; Vector columnNames = new
+		 * Vector(); Vector data = new Vector(); panel3 = new JPanel(); JLabel
+		 * lSqlQuery = new JLabel(
+		 * "Enter SQL Query = Select * From Mars Lander");
+		 * lSqlQuery.setBackground(Color.GREEN); fSqlQuery = new JTextArea(null,
+		 * sql, 2, 2); submit = new JButton(" Submit "); panel3.add(lSqlQuery);
+		 * panel3.add(fSqlQuery); panel3.add(submit);
+		 * submit.setBackground(Color.GREEN);
+		 * lSqlQuery.setForeground(Color.WHITE);
+		 * panel3.setBackground(Color.BLACK); try {
+		 * Class.forName("oracle.jdbc.driver.OracleDriver"); Connection con =
+		 * DriverManager
+		 * .getConnection("jdbc:oracle:thin:@localhost:1521:teamb", "SYSTEM",
+		 * "e307016.ACCT04");
+		 * 
+		 * Statement stmt = con.createStatement(); ResultSet rs =
+		 * stmt.executeQuery(sql); ResultSetMetaData md = rs.getMetaData(); int
+		 * columns = md.getColumnCount(); for (int i = 1; i <= columns; i++) {
+		 * columnNames.addElement(md.getColumnName(i)); }
+		 * 
+		 * while (rs.next()) { Vector row = new Vector(columns); for (int i = 1;
+		 * i <= columns; i++) { row.addElement(rs.getObject(i)); }
+		 * data.addElement(row); } rs.close(); stmt.close();
+		 * 
+		 * } catch (Exception e) { System.out.println(e); }
+		 * 
+		 * JTable table = new JTable(data, columnNames); TableColumn col; for
+		 * (int i = 0; i < table.getColumnCount(); i++) { col =
+		 * table.getColumnModel().getColumn(i); col.setMaxWidth(250); }
+		 * JScrollPane scrollPane = new JScrollPane(table);
+		 * panel3.add(scrollPane);
+		 * 
+		 * BoxLayout bLayout = new BoxLayout(panel3, 1);
+		 * panel3.setLayout(bLayout);
+		 */
 	}
 
 	// Create Page 4
 	public void createPage4() {
-
 		Color bg = new Color(Color.TRANSLUCENT);
 		panel4 = new JPanel();
 		JLabel l = new JLabel();
@@ -1312,9 +1257,7 @@ public class GCSInterface extends JFrame {
 	public void sysLog() {
 		PrintWriter out;
 		try {
-			out = new PrintWriter(
-					"./src/GCSlog"
-							+ logcount + ".txt");
+			out = new PrintWriter("./src/GCSlog" + logcount + ".txt");
 			out.println("Phase "
 					+ phasecount
 					+ " + \n/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////"
@@ -1365,105 +1308,91 @@ public class GCSInterface extends JFrame {
 
 	public void Phase1() throws SQLException {
 
-		/*try {
+		/*
+		 * try {
+		 * 
+		 * conn = DriverManager
+		 * .getConnection("jdbc:oracle:thin:@localhost:1521:teamb", "SYSTEM",
+		 * "e307016.ACCT04"); Statement stmt = conn.createStatement(); rs = stmt
+		 * .
+		 * executeQuery("SELECT ALTITUDE FROM PREDEFINED WHERE ALTITUDE = 26400"
+		 * ); while (rs.next()) { String alt = rs.getString("altitude");
+		 * System.out.println(alt); altitude = Double.parseDouble(alt);
+		 */
 
-			conn = DriverManager
-					.getConnection("jdbc:oracle:thin:@localhost:1521:teamb",
-							"SYSTEM", "admin");
-			Statement stmt = conn.createStatement();
-			rs = stmt
-					.executeQuery("SELECT ALTITUDE FROM PREDEFINED WHERE ALTITUDE = 26400");
-			while (rs.next()) {
-				String alt = rs.getString("altitude");
-				System.out.println(alt);
-				altitude = Double.parseDouble(alt);*/
+		fAltitude.setText("" + altitude);
+		fAxialEng1.setText(" Ignited");
+		fAxialEng2.setText(" Ignited");
+		fAxialEng3.setText(" Ignited");
+		fRollEng1.setText(" Ignited");
+		fRollEng2.setText(" Ignited");
+		fRollEng3.setText(" Ignited");
+		fThrust.setText("NA");
+		fEng1.setText("ON");
+		fEng2.setText("ON");
+		fEng3.setText("ON");
+		fAccel1.setText("ON");
+		fAccel2.setText("ON");
+		fAccel3.setText("ON");
+		fAngle.setText("" + getAngle() * 2);
+		fVar1.setText("" + getVar1());
 
-				fAltitude.setText("" + altitude);
-				fAxialEng1.setText(" Ignited");
-				fAxialEng2.setText(" Ignited");
-				fAxialEng3.setText(" Ignited");
-				fRollEng1.setText(" Ignited");
-				fRollEng2.setText(" Ignited");
-				fRollEng3.setText(" Ignited");
-				fThrust.setText("NA");
-				fEng1.setText("ON");
-				fEng2.setText("ON");
-				fEng3.setText("ON");
-				fAccel1.setText("ON");
-				fAccel2.setText("ON");
-				fAccel3.setText("ON");
-				fAngle.setText("" + getAngle() * 2);
-				fVar1.setText("" + getVar1());
+		fAxialEng1.setText("Warming!");
+		fAxialEng2.setText("Warming!");
+		fAxialEng3.setText("Warming!");
+		fRollEng1.setText("Warming!");
+		fRollEng2.setText("Warming!");
+		fRollEng3.setText("Warming!");
+		fTempSensor.setText("" + engineTemp * .05);
+		fVertical.setText("" + getAngle() * 1.14);
+		fHorizontal.setText("" + getAngle() * 1.14);
+		fParachuteIndicator.setText("Open = "
+				+ (parachuteIndicator = "Yes" != null));
+		fTime.setText("" + fmt.format(timeCount + 30));
+		phasecount++;
+		logcount++;
+		PrintWriter out;
 
-				fAxialEng1.setText("Warming!");
-				fAxialEng2.setText("Warming!");
-				fAxialEng3.setText("Warming!");
-				fRollEng1.setText("Warming!");
-				fRollEng2.setText("Warming!");
-				fRollEng3.setText("Warming!");
-				fTempSensor.setText("" + engineTemp * .05);
-				fVertical.setText("" + getAngle() * 1.14);
-				fHorizontal.setText("" + getAngle() * 1.14);
-				fParachuteIndicator.setText("Open = "
-						+ (parachuteIndicator = "Yes" != null));
-				fTime.setText("" + fmt.format(timeCount + 30));
-				phasecount++;
-				logcount++;
-				PrintWriter out;
+		try {
+			out = new PrintWriter("./src/GCSlog" + logcount + ".txt");
+			out.println("Phase " + phasecount + " \n" + " Altitude: "
+					+ (fAltitude.getText()) + " \n" + "Engine 1: "
+					+ (fEng1.getText()) + "\n" + "  Engine 2: "
+					+ (fEng2.getText()) + "\n" + "  Engine 3: "
+					+ (fEng2.getText()) + "\n" + "  Accelorometer 1: "
+					+ (fAccel1.getText()) + " MPH  " + "\n"
+					+ " Accelorometer 2: " + (fAccel2.getText()) + " MPH  "
+					+ "\n" + " Accelrometer 3: " + (fAccel3.getText())
+					+ " MPH " + "\n" + "  Engine 50% Thrust: "
+					+ (fThrust.getText()) + "\n" + "  Descent Time: "
+					+ (fTime.getText()) + " minutes " + "\n"
+					+ "  Descent Rate: " + (fVar1.getText())
+					+ " feet per minute  " + "  Drop Height: "
+					+ (fDropHeight.getText()) + "\n" + "   Air Speed: "
+					+ (fAngle.getText()) + "\n" + "   Horizontal Speed: "
+					+ (fHorizontal.getText()) + "   Vertical Speed: "
+					+ (fVertical.getText()) + "  Engine Warm Up Time: "
+					+ (fTimeCount.getText()) + "   Parachute Indicator: "
+					+ (fParachuteIndicator.getText()) + "   Dropheight: "
+					+ (fDropHeight.getText()) + "  Axial Engine 1 Status: "
+					+ (fAxialEng1.getText()) + "  Axial Engine 2 Status: "
+					+ (fAxialEng2.getText()) + "  Axial Engine 3 Status: "
+					+ (fAxialEng3.getText()) + "  Roll Engine 1 Status: "
+					+ (fRollEng1.getText()) + "  Roll Engine 1 Status: "
+					+ (fRollEng2.getText()) + "  Roll Engine 1 Status: "
+					+ (fRollEng3.getText()));
+			out.close();
+		} catch (FileNotFoundException ey) {
+			System.out.println(ey);
 
-				try {
-					out = new PrintWriter(
-							"./src/GCSlog"
-									+ logcount + ".txt");
-					out.println("Phase "
-							+ phasecount
-							+ " + \n/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////"
-							+ "Altitude: " + (fAltitude.getText()) + "\n"
-							+ "Engine 1: " + (fEng1.getText()) + "\n"
-							+ "  Engine 2: " + (fEng2.getText()) + "\n"
-							+ "  Engine 3: " + (fEng2.getText()) + "\n"
-							+ "  Accelorometer 1: " + (fAccel1.getText())
-							+ " MPH  " + "\n" + " Accelorometer 2: "
-							+ (fAccel2.getText()) + " MPH  " + "\n"
-							+ " Accelrometer 3: " + (fAccel3.getText())
-							+ " MPH " + "\n" + "  Engine 50% Thrust: "
-							+ (fThrust.getText()) + "\n" + "  Descent Time: "
-							+ (fTime.getText()) + " minutes " + "\n"
-							+ "  Descent Rate: " + (fVar1.getText())
-							+ " feet per minute  " + "  Drop Height: "
-							+ (fDropHeight.getText()) + "\n" + "   Air Speed: "
-							+ (fAngle.getText()) + "\n"
-							+ "   Horizontal Speed: " + (fHorizontal.getText())
-							+ "   Vertical Speed: " + (fVertical.getText())
-							+ "  Engine Warm Up Time: "
-							+ (fTimeCount.getText())
-							+ "   Parachute Indicator: "
-							+ (fParachuteIndicator.getText())
-							+ "   Dropheight: " + (fDropHeight.getText())
-							+ "  Axial Engine 1 Status: "
-							+ (fAxialEng1.getText())
-							+ "  Axial Engine 2 Status: "
-							+ (fAxialEng2.getText())
-							+ "  Axial Engine 3 Status: "
-							+ (fAxialEng3.getText())
-							+ "  Roll Engine 1 Status: "
-							+ (fRollEng1.getText())
-							+ "  Roll Engine 1 Status: "
-							+ (fRollEng2.getText())
-							+ "  Roll Engine 1 Status: "
-							+ (fRollEng3.getText()));
-					out.close();
-				} catch (FileNotFoundException ey) {
-					System.out.println(ey);
-
-				}
-			/*}
-			conn.close();
-		} catch (SQLException e) {
-			System.err.println("Got an exception! ");
-			System.err.println(e.getMessage());
-
-		}*/
+		}
+		/*
+		 * } conn.close(); } catch (SQLException e) {
+		 * System.err.println("Got an exception! ");
+		 * System.err.println(e.getMessage());
+		 * 
+		 * }
+		 */
 
 	}
 
@@ -1504,14 +1433,10 @@ public class GCSInterface extends JFrame {
 		PrintWriter out;
 
 		try {
-			out = new PrintWriter(
-					"./src/GCSlog"
-							+ logcount + ".txt");
-			out.println("Phase "
-					+ phasecount
-					+ " + \n/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////"
-					+ "Altitude: " + (fAltitude.getText()) + "\n"
-					+ "Engine 1: " + (fEng1.getText()) + "\n" + "  Engine 2: "
+			out = new PrintWriter("./src/GCSlog" + logcount + ".txt");
+			out.println("Phase " + phasecount + " \n" + " Altitude: "
+					+ (fAltitude.getText()) + "\n" + "Engine 1: "
+					+ (fEng1.getText()) + "\n" + "  Engine 2: "
 					+ (fEng2.getText()) + "\n" + "  Engine 3: "
 					+ (fEng2.getText()) + "\n" + "  Accelorometer 1: "
 					+ (fAccel1.getText()) + " MPH  " + "\n"
@@ -1555,26 +1480,23 @@ public class GCSInterface extends JFrame {
 		accel1 = eng1 + thrust;
 		accel2 = eng2 + thrust;
 		accel3 = eng3 + thrust;
-		/*try {
-
-			conn = DriverManager
-					.getConnection("jdbc:oracle:thin:@localhost:1521:teamb",
-							"SYSTEM", "admin");
-			Statement stmt = conn.createStatement();
-			rs = stmt
-					.executeQuery("SELECT DROPHEIGHT FROM PREDEFINED WHERE DROPHEIGHT = 500");
-			while (rs.next()) {
-				String dead = rs.getString("dropheight");
-				System.out.println(dead);
-				dropHeight = Double.parseDouble(dead);
-
-			}
-			conn.close();
-		} catch (SQLException e) {
-			System.err.println("Got an exception! ");
-			System.err.println(e.getMessage());
-
-		}*/
+		/*
+		 * try {
+		 * 
+		 * conn = DriverManager
+		 * .getConnection("jdbc:oracle:thin:@localhost:1521:teamb", "SYSTEM",
+		 * "e307016.ACCT04"); Statement stmt = conn.createStatement(); rs = stmt
+		 * .
+		 * executeQuery("SELECT DROPHEIGHT FROM PREDEFINED WHERE DROPHEIGHT = 500"
+		 * ); while (rs.next()) { String dead = rs.getString("dropheight");
+		 * System.out.println(dead); dropHeight = Double.parseDouble(dead);
+		 * 
+		 * } conn.close(); } catch (SQLException e) {
+		 * System.err.println("Got an exception! ");
+		 * System.err.println(e.getMessage());
+		 * 
+		 * }
+		 */
 
 		while (altitude > dropHeight) {
 			int i;
@@ -1631,30 +1553,25 @@ public class GCSInterface extends JFrame {
 			PrintWriter out;
 
 			try {
-				out = new PrintWriter(
-						"./src/GCSlog"
-								+ logcount + ".txt");
-				out.println("Phase "
-						+ phasecount
-						+ " + \n/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////"
-						+ "Altitude: " + (fAltitude.getText()) + "\n"
-						+ "Engine 1: " + (fEng1.getText()) + "\n"
-						+ "  Engine 2: " + (fEng2.getText()) + "\n"
-						+ "  Engine 3: " + (fEng2.getText()) + "\n"
-						+ "  Accelorometer 1: " + (fAccel1.getText())
-						+ " MPH  " + "\n" + " Accelorometer 2: "
-						+ (fAccel2.getText()) + " MPH  " + "\n"
-						+ " Accelrometer 3: " + (fAccel3.getText()) + " MPH "
-						+ "\n" + "  Engine 50% Thrust: " + (fThrust.getText())
-						+ "\n" + "  Descent Time: " + (fTime.getText())
-						+ " minutes " + "\n" + "  Descent Rate: "
-						+ (fVar1.getText()) + " feet per minute  "
-						+ "  Drop Height: " + (fDropHeight.getText()) + "\n"
-						+ "   Air Speed: " + (fAngle.getText()) + "\n"
-						+ "   Horizontal Speed: " + (fHorizontal.getText())
-						+ "   Vertical Speed: " + (fVertical.getText())
-						+ "  Engine Warm Up Time: " + (fTimeCount.getText())
-						+ "   Parachute Indicator: "
+				out = new PrintWriter("./src/GCSlog" + logcount + ".txt");
+				out.println("Phase " + phasecount + " \n" + " Altitude: "
+						+ (fAltitude.getText()) + "\n" + "Engine 1: "
+						+ (fEng1.getText()) + "\n" + "  Engine 2: "
+						+ (fEng2.getText()) + "\n" + "  Engine 3: "
+						+ (fEng2.getText()) + "\n" + "  Accelorometer 1: "
+						+ (fAccel1.getText()) + " MPH  " + "\n"
+						+ " Accelorometer 2: " + (fAccel2.getText()) + " MPH  "
+						+ "\n" + " Accelrometer 3: " + (fAccel3.getText())
+						+ " MPH " + "\n" + "  Engine 50% Thrust: "
+						+ (fThrust.getText()) + "\n" + "  Descent Time: "
+						+ (fTime.getText()) + " minutes " + "\n"
+						+ "  Descent Rate: " + (fVar1.getText())
+						+ " feet per minute  " + "  Drop Height: "
+						+ (fDropHeight.getText()) + "\n" + "   Air Speed: "
+						+ (fAngle.getText()) + "\n" + "   Horizontal Speed: "
+						+ (fHorizontal.getText()) + "   Vertical Speed: "
+						+ (fVertical.getText()) + "  Engine Warm Up Time: "
+						+ (fTimeCount.getText()) + "   Parachute Indicator: "
 						+ (fParachuteIndicator.getText()) + "   Dropheight: "
 						+ (fDropHeight.getText()) + "  Axial Engine 1 Status: "
 						+ (fAxialEng1.getText()) + "  Axial Engine 2 Status: "
@@ -1714,14 +1631,10 @@ public class GCSInterface extends JFrame {
 		PrintWriter out;
 
 		try {
-			out = new PrintWriter(
-					"./src/GCSlog"
-							+ logcount + ".txt");
-			out.println("Phase "
-					+ phasecount
-					+ " + \n/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////"
-					+ "Altitude: " + (fAltitude.getText()) + "\n"
-					+ "Engine 1: " + (fEng1.getText()) + "\n" + "  Engine 2: "
+			out = new PrintWriter("./src/GCSlog" + logcount + ".txt");
+			out.println("Phase " + phasecount + " \n" + " Altitude: "
+					+ (fAltitude.getText()) + "\n" + "Engine 1: "
+					+ (fEng1.getText()) + "\n" + "  Engine 2: "
 					+ (fEng2.getText()) + "\n" + "  Engine 3: "
 					+ (fEng2.getText()) + "\n" + "  Accelorometer 1: "
 					+ (fAccel1.getText()) + " MPH  " + "\n"
@@ -1782,30 +1695,25 @@ public class GCSInterface extends JFrame {
 				PrintWriter out;
 
 				try {
-					out = new PrintWriter(
-							"./src/GCSlog"
-									+ logcount + ".txt");
-					out.println("Phase "
-							+ phasecount
-							+ " + \n/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////"
-							+ "Altitude: " + (fAltitude.getText()) + "\n"
-							+ "Engine 1: " + (fEng1.getText()) + "\n"
-							+ "  Engine 2: " + (fEng2.getText()) + "\n"
-							+ "  Engine 3: " + (fEng2.getText()) + "\n"
-							+ "  Accelorometer 1: " + (fAccel1.getText())
-							+ " MPH  " + "\n" + " Accelorometer 2: "
-							+ (fAccel2.getText()) + " MPH  " + "\n"
-							+ " Accelrometer 3: " + (fAccel3.getText())
-							+ " MPH " + "\n" + "  Engine 50% Thrust: "
-							+ (fThrust.getText()) + "\n" + "  Descent Time: "
-							+ (fTime.getText()) + " minutes " + "\n"
-							+ "  Descent Rate: " + (fVar1.getText())
-							+ " feet per minute  " + "  Drop Height: "
-							+ (fDropHeight.getText()) + "\n" + "   Air Speed: "
-							+ (fAngle.getText()) + "\n"
-							+ "   Horizontal Speed: " + (fHorizontal.getText())
-							+ "   Vertical Speed: " + (fVertical.getText())
-							+ "  Engine Warm Up Time: "
+					out = new PrintWriter("./src/GCSlog" + logcount + ".txt");
+					out.println("Phase " + phasecount + " \n" + " Altitude: "
+							+ (fAltitude.getText()) + "\n" + "Engine 1: "
+							+ (fEng1.getText()) + "\n" + "  Engine 2: "
+							+ (fEng2.getText()) + "\n" + "  Engine 3: "
+							+ (fEng2.getText()) + "\n" + "  Accelorometer 1: "
+							+ (fAccel1.getText()) + " MPH  " + "\n"
+							+ " Accelorometer 2: " + (fAccel2.getText())
+							+ " MPH  " + "\n" + " Accelrometer 3: "
+							+ (fAccel3.getText()) + " MPH " + "\n"
+							+ "  Engine 50% Thrust: " + (fThrust.getText())
+							+ "\n" + "  Descent Time: " + (fTime.getText())
+							+ " minutes " + "\n" + "  Descent Rate: "
+							+ (fVar1.getText()) + " feet per minute  "
+							+ "  Drop Height: " + (fDropHeight.getText())
+							+ "\n" + "   Air Speed: " + (fAngle.getText())
+							+ "\n" + "   Horizontal Speed: "
+							+ (fHorizontal.getText()) + "   Vertical Speed: "
+							+ (fVertical.getText()) + "  Engine Warm Up Time: "
 							+ (fTimeCount.getText())
 							+ "   Parachute Indicator: "
 							+ (fParachuteIndicator.getText())
@@ -1822,7 +1730,7 @@ public class GCSInterface extends JFrame {
 							+ (fRollEng2.getText())
 							+ "  Roll Engine 1 Status: "
 							+ (fRollEng3.getText()));
-				
+					out.close();
 					out.close();
 				} catch (FileNotFoundException ey) {
 					System.out.println(ey);
